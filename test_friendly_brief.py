@@ -13,6 +13,11 @@ testcases = [
         "Sikh Council on Religion and Education",
         "South Asian Americans Leading Together",
     ]),
+    ("7.    Brief, BRIEF OF AMICI CURIAE NOW LEGAL DEFENSE AND EDUCATION FUND, LAWYERS COMMITTEE FOR HUMAN RIGHTS, AND ALLARD K. LOWENSTEIN INTERNATIONAL HUMAN RIGHTS CLINIC IN SUPPORT OF RESPONDENTS, August 10, 2001, 2001 U.S. S. Ct. Briefs LEXIS 43 ", [
+        "Now Legal Defense and Education Fund",
+        "Lawyers Committee for Human Rights",
+        "Allard L Lowestein International Human Rights Clinic",
+    ]),
 ]
 
 def standard(xs):
