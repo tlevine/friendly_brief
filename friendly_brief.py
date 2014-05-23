@@ -1,0 +1,2 @@
+def amicus(text):
+    return []
