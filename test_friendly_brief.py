@@ -15,9 +15,12 @@ testcases = [
     ]),
 ]
 
+def standard(xs):
+    return [x.lower() for x in sorted(xs)]
+
 def check_amicus(brief, expectation):
     observation = amicus(brief)
-    n.assert_list_equal(sorted(observation), sorted(expectation))
+    n.assert_list_equal(standard(observation), standard(expectation))
 
 def test_amicus():
     for brief, expectation in testcases:
