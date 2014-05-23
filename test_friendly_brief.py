@@ -7,7 +7,7 @@ testcases = [
     ("2.       Brief of amici Curiae, The Sikh Coalition, American-Arab Anti-Discrimination Committee, Discrimination and National Security Initiative, Muslim Public Affairs Council. Sikh American Legal Defense and Education Fund, Sikh Council on Religion and E ducation, South Asian Americans Leading Together and United Sikhs in Support of Respondent Iqubal", [
         "The Sikh Coalition",
         "American-Arab Anti-Discrimination Committee",
-        "Discrimination and National Security Initiative,",
+        "Discrimination and National Security Initiative",
         "Muslim Public Affairs Council",
         "Sikh American Legal defense and Education fund",
         "Sikh Council on Religion and Education",
@@ -17,7 +17,7 @@ testcases = [
 
 def check_amicus(brief, expectation):
     observation = amicus(brief)
-    n.assert_list_equal(observation, expectation)
+    n.assert_list_equal(sorted(observation), sorted(expectation))
 
 def test_amicus():
     for brief, expectation in testcases:
