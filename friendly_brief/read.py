@@ -28,7 +28,7 @@ def amici(brief:str) -> list:
     buffer = 0
 
     results = _amici(unidecode(amici_section), buffer, 0)
-    for previous_result, current_result, next_result in window(chain([''], results, ['']), n = 3):
+    for previous_result, current_result, next_result in window(chain(['  '], results, ['  ']), n = 3):
         if next_result.count(' ') == 0 and  'inc' in next_result.lower():
             yield current_result + ', ' + next_result
         elif current_result.count(' ') == 0:
