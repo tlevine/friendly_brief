@@ -21,7 +21,7 @@ brief titles that you care about, and the titles must be in a column called
 
     friendly-brief briefs.csv
 
-It can also receive a CSV file over stdin.
+It can also receive a CSV file over STDIN. ::
 
     cat briefs.csv | friendly-brief
 
