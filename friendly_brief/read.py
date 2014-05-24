@@ -39,10 +39,10 @@ def amici(brief:str) -> list:
 
     def clean(result):
         r = result.strip()
-        match = re.search(r'brief(?: of)?(?: amicus curiae)? ', r, flags = re.IGNORECASE)
-        if match and match.end() < len(result) / 2:
+        match = re.search(r'brief(?: for| of)?(?: the)?(?: amicus curiae)? ', r, flags = re.IGNORECASE)
+        if match and match.start() < len(result) / 2:
             return r[match.end():]
-        elif match and match.start() > len(result) / 2:
+        elif match and match.end() > len(result) / 2:
             return r[:match.start()]
         else:
             return r
@@ -51,7 +51,9 @@ def amici(brief:str) -> list:
     results = map(clean, map(clean, _amici(unidecode(amici_section), amicus_separator, buffer, 0)))
     slider = window(chain(['  '], results, ['  ']), n = 3)
     for previous_result, current_result, next_result in slider:
-        if 'inc.' in next_result.lower():
+        if current_result.lower() in ['', 'as']:
+            pass
+        elif 'inc.' in next_result.lower():
             yield current_result + ', ' + next_result
             next(slider)
         elif re.match(r'et al\.?', next_result, flags = re.IGNORECASE):
