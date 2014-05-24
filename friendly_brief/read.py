@@ -9,16 +9,17 @@ def amici(brief:str) -> list:
 
     match = re.search(r'amici (?:curiae)?', amici_section, flags = re.IGNORECASE)
     if match != None and match.start() < 30:
-        amici_section = amici_section[m.end():]
+        amici_section = amici_section[match.end():]
     match = re.search(r'amici (?:curiae)?', amici_section, flags = re.IGNORECASE)
     if match != None and match.start() > 30:
         amici_section = amici_section[:match.start()]
 
     if amici_section.lower().count(' support ') <= 1:
         amici_section = re.sub(r' support .*', '', amici_section, flags = re.IGNORECASE)
-    if ' amici ' in amici_section[:20].lower():
-        amici_section = re.sub(r'^[^,]+amici curiae', '', amici_section, flags = re.IGNORECASE) 
-    if re.search(r' inc[^a-z]', amici_section, flags = re.IGNORECASE):
+
+    if ',' in amici_section and ' and ' in amici_section.lower():
+        buffer = 20
+    elif re.search(r' inc[^a-z]', amici_section, flags = re.IGNORECASE):
         buffer = 5
     else:
         buffer = 0
