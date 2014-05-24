@@ -61,7 +61,7 @@ def check_amici_sans_brief(brief, _):
 def check_amici_sans_startswith_junk(brief, _):
     for junk in ['for the']:
         for observed_amicus in f.amici(brief):
-           n.assert_false(observed_amicus.lower().startswith(junk))
+           n.assert_false(observed_amicus.lower().startswith(junk), msg = observed_amicus)
 
 def check_amici_sans_literal_junk(brief, _):
     for junk in ['', 'et al.', 'as','l.l.c.']:
