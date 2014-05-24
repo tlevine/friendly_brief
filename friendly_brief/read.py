@@ -49,15 +49,14 @@ def amici(brief:str) -> list:
 
     # Clean twice
     results = map(clean, map(clean, _amici(unidecode(amici_section), amicus_separator, buffer, 0)))
-    for previous_result, current_result, next_result in window(chain(['  '], results, ['  ']), n = 3):
+    slider = window(chain(['  '], results, ['  ']), n = 3)
+    for previous_result, current_result, next_result in slider:
         if 'inc.' in next_result.lower():
             yield current_result + ', ' + next_result
-            next(results)
+            next(slider)
         elif re.match(r'et al\.?', next_result, flags = re.IGNORECASE):
             yield current_result + ', ' + next_result
-            next(results)
-#       elif previous_result.count(' ') == 0:
-#           yield previous_result + ' and ' + current_result
+            next(slider)
         else:
             yield current_result
 
