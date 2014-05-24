@@ -48,7 +48,7 @@ But it is not among the following values output from the amici function.
     lengths = (len(observation), len(expectation))
     if len(observation) < len(expectation):
         raise AssertionError('The amici were not broken up enough; there are %d amici, but only %d were found.' % lengths)
-    if len(observation) > len(expectation) + 2:
+    if len(observation) > len(expectation) + 1:
         msg = 'The amici were too broken up; %d amici were reported, but there are only supposed to be %d:\n' + '\n* '.join(observation)
         raise AssertionError(msg % lengths)
 
