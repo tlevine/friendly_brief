@@ -1,0 +1,51 @@
+Hi Tom,
+
+I'm sending you 3 documents: a spreadsheet and a word document with the
+information I need to scrap for 45 cases, as well as a spreadsheet with
+what the final product would look like.  This last spreadsheet includes
+only two cases with some of their respective briefs in it.
+
+The phrases that identify the parties and posture, as well as the coding
+that I'm using is the following:
+
+Amici are separated by commas (,) and conjuctions (and), but some of them
+include commas and/or periods (,.) within their name (e.g., Inc., ).
+
+Document: Brief, amicus brief, amici brief, or motion for leave to file and
+brief:
+Prepositions indicating Author: of, by, for
+
+Preposition indicating posture: on behalf of, in support of, for
+
+Posture and coding:
+
+Petitioner/s = Appellant/s = Reversal è 1
+
+Respondent/s = Appellee/s = Affirmance è 2
+
+Neither party è 0
+
+Plaintiff/s è3
+
+Defendant/s è 4
+
+Two other colums are being coded as follows, but if this information is too
+much to code for, you can leave that out.
+
+Coding for amicus brief: 1 for single person, 2 for more than one person, 3
+for single collective entity (government, business, organization, Indian
+tribe, etc.), 4 for more than one collective entity.
+
+
+Coding for Type of amici: individual person (1), organizations (2),
+government entity (3 for agency, department, state, tribe, Indian nation,
+the U.S., a foreign government, etc.), state legislators (4), federal
+legislators (5), judges (6), bar associations, legal foundation, or law
+firms (7), law schools, law professors or law school clinics (8), other
+schools (9), other professional associations or organizations (10), union
+or workers center (11), business/industrial/commercial entity (12), and
+organizations expressly or impliedly identified as alliance/coalition (13).
+
+Let me know what you think.
+Best,
+Cesar
