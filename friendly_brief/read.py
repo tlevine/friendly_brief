@@ -8,7 +8,18 @@ from unidecode import unidecode
 def _remove_date(brief:str) -> str:
     return re.sub(r',? (:?january|february|march|april|may|june|july|august|september|october|november|december) [0-9]{1,2}.*$', '', brief, flags = re.IGNORECASE)
 
+MANUAL_OVERRIDE = [
+    ("1. Brief, BRIEF OF AMICI CURIAE NATIONAL ASSOCIATION OF CRIMINAL DEFENSE LAWYERS AND FAMILIES AGAINST MANDATORY MINIMUMS FOUNDATION AND ASSOCIATION OF FEDERAL DEFENDERS IN SUPPORT OF PETITIONERTHE NATIONAL ASSOCIATION OF CRIMINAL DEFENSE LAWYERS and FAMILIES AGAINST MANDATORY MINIMUMS FOUNDATION and THE ASSOCIATION OF FEDERAL DEFENDERS", ['NATIONAL ASSOCIATION OF CRIMINAL DEFENSE LAWYERS', 'FAMILIES AGAINST MANDATORY MINIMUMS FOUNDATION', 'ASSOCIATION OF FEDERAL DEFENDERS'])
+]
+
 def amici(brief:str) -> list:
+    for member, result in MANUAL_OVERRIDE:
+        if member in brief:
+            return result
+    else:
+        return list(_amici(brief))
+
+def _amici(brief:str) -> iter:
     _amicus_regex = re.compile(r'(?:amicus brief|amici brief|amici curiae|amicus curiae|motion for leave to file and brief)(?: of)?', flags = re.IGNORECASE)
     amici_section = _remove_date(brief)
     amici_section = re.sub(r'[0-9]+\. +Brief,', '', amici_section, flags = re.IGNORECASE)
@@ -52,7 +63,7 @@ def amici(brief:str) -> list:
             return r
 
     # Clean twice
-    results = map(clean, map(clean, _amici(unidecode(amici_section), amicus_separator, buffer, 0)))
+    results = map(clean, map(clean, _amicus(unidecode(amici_section), amicus_separator, buffer, 0)))
     slider = window(chain(['  '], results, ['  ']), n = 3)
     for previous_result, current_result, next_result in slider:
         if re.match(r'^(|as|amic(i|us) curiae)$', current_result, flags = re.IGNORECASE):
@@ -66,7 +77,7 @@ def amici(brief:str) -> list:
         else:
             yield current_result
 
-def _amici(brief:str, amicus_separator, buffer:int, start:int) -> iter:
+def _amicus(brief:str, amicus_separator, buffer:int, start:int) -> iter:
     match = re.search(amicus_separator, brief[start:])
     buffered_start = max(0, start - buffer)
     if match != None:
@@ -90,7 +101,7 @@ def _amici(brief:str, amicus_separator, buffer:int, start:int) -> iter:
             pass
         else:
             yield result
-        child = _amici(brief, amicus_separator, buffer, start + match.end())
+        child = _amicus(brief, amicus_separator, buffer, start + match.end())
         if child != None:
             yield from child
     else:
