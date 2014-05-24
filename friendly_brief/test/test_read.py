@@ -45,6 +45,11 @@ But it is not among the following values output from the amici function.
 
     %s'''
             raise AssertionError(msg % (expected_amicus, brief, pformat(observation)))
+
+
+    for observed_amicus in observation:
+       n.assert_not_in('brief', observed_amicus.lower())
+
     lengths = (len(observation), len(expectation))
     if len(observation) < len(expectation) - 1: # Failures at non-Oxford comma are okay.
         msg = 'The amici were not broken up enough; only %d amici were reported, but there are supposed to be %d:\n' + '\n* '.join(observation)
