@@ -27,6 +27,12 @@ def main():
 
         for brief_row in reader:
             brief = brief_row[i]
-            brief_annotations = (r.brief_number(brief), r.posture(brief))
-            for amicus in r.amici(brief):
-                writer.writerow(tuple(chain(brief_row, brief_annotations, (amicus,))))
+            if brief == '':
+                # Stop at the first empty brief.
+                break
+            try:
+                brief_annotations = (r.brief_number(brief), r.posture(brief))
+                for amicus in r.amici(brief):
+                    writer.writerow(tuple(chain(brief_row, brief_annotations, (amicus,))))
+            except:
+                sys.stderr.write('Error on the following brief:\n    %s\n' % brief)
