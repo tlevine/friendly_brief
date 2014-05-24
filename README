@@ -7,7 +7,7 @@ For such a title, friendly_brief tries to guess the
 
 * Brief number
 * Amici curiae
-* Position of the amici
+* Posture of the amici
 
 How to use
 --------------
@@ -41,5 +41,28 @@ and then a ".".
 
 We stop upon noticing the non-digit "." and use "19" as the brief number.
 
-Position
+Posture
 ~~~~~~~~~~~~
+Posture is guessed based on the presence of certain phrases.
+There are five types of posture, and here are their corresponding phrases
+
+Posture 0
+    "Neither party"
+Posture 1
+    "Petitioner", "Appellant", and "Reversal"
+Posture 2
+    "Respondent", "Appellee", "Affirmance"
+Posture 3
+    "Plaintiff"
+Posture 4
+    "Defendant"
+
+The program looks for the presence of all of these phrases.
+If the result is unambiguous, the resulting spreadsheet contains
+the number corresponding to the posture.
+
+Ambiguity can occur if no posture phrases are present or if
+phrases corresponding to different postures are present.
+For example, I would consider a brief title containing both
+"plaintiff" and "defendant" to be ambiguous. In cases of
+ambiguouity, the posture cell is left blank.
