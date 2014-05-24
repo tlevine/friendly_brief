@@ -9,9 +9,7 @@ def amici(brief:str) -> list:
         amici_section = re.sub(r' support .*', '', amici_section, flags = re.IGNORECASE)
     if ' amici ' in amici_section[:20].lower():
         amici_section = re.sub(r'^[^,]+amici curiae', '', amici_section, flags = re.IGNORECASE) 
-    if ' and ' in amici_section.lower() and ',' in amici_section:
-        buffer = 20
-    elif re.search(r' inc[^a-z]', amici_section, flags = re.IGNORECASE):
+    if re.search(r' inc[^a-z]', amici_section, flags = re.IGNORECASE):
         buffer = 5
     else:
         buffer = 0
