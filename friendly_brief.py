@@ -4,7 +4,7 @@ from collections import Counter
 from unidecode import unidecode
 
 def amici(brief:str) -> list:
-    return list(_amici(unidecode(brief), 0))
+    return list(filter(None, _amici(unidecode(brief), 0)))
 
 def _amici(brief:str, start:int) -> iter:
     _amicus_separator = re.compile(r'(?:,| and) ')
@@ -15,7 +15,9 @@ def _amici(brief:str, start:int) -> iter:
         buffered_start = max(0, start - _buffer)
         buffered_end = match.end() + _buffer
         yield brief[buffered_start:buffered_end]
-        yield from _amici(brief, start + match.end())
+        child = _amici(brief, start + match.end())
+        if child != None:
+            yield from child
 
 def brief_number(brief:str) -> int:
     return int(re.sub('[^0-9].+$', '', brief))
