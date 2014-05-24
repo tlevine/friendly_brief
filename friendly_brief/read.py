@@ -58,7 +58,7 @@ def amici(brief:str) -> list:
         elif 'inc.' in next_result.lower():
             yield current_result + ', ' + next_result
             next(slider)
-        elif re.match(r'^et al\.?$', next_result, flags = re.IGNORECASE):
+        elif re.match(r'^et al\.?,?$', next_result, flags = re.IGNORECASE):
             yield current_result + ', ' + next_result
             next(slider)
         else:
