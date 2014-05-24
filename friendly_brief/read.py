@@ -15,9 +15,7 @@ def amici(brief:str) -> list:
     if match != None and match.start() > len(amici_section)*2/5:
         amici_section = amici_section[:match.start()]
 
-#   if amici_section.lower().count(' support ') <= 1:
-#       amici_section = re.sub(r' support .*', '', amici_section, flags = re.IGNORECASE)
-    amici_section = re.sub(r' support of .*', '', amici_section, flags = re.IGNORECASE)
+    amici_section = re.sub(r' in support of .*', '', amici_section, flags = re.IGNORECASE)
 
     if re.search(r' inc[^a-z]', amici_section, flags = re.IGNORECASE):
         buffer = 5
@@ -25,6 +23,7 @@ def amici(brief:str) -> list:
         buffer = 0
     else:
         buffer = 0
+#   buffer = 0
     return list(_amici(unidecode(amici_section), buffer, 0))
 
 def _amici(brief:str, buffer:int, start:int) -> iter:
@@ -34,7 +33,7 @@ def _amici(brief:str, buffer:int, start:int) -> iter:
     buffered_start = max(0, start - buffer)
     if match != None:
         buffered_end = start + match.start() + buffer
-        result = brief[buffered_start:buffered_end]
+        result = brief[buffered_start:buffered_end].strip()
         if result.count(' ') == 0:
             # Probably the beginning of an amicus like
             # "Discrimination and National Security Initiative"
