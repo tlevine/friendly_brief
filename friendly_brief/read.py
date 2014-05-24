@@ -5,8 +5,8 @@ from collections import Counter
 from sliding_window import window
 from unidecode import unidecode
 
-_amicus_regex = re.compile(r'(?:amicus brief|amici brief|amici curiae|amicus curiae|motion for leave to file and brief)(?: of)?', flags = re.IGNORECASE)
 def amici(brief:str) -> list:
+    _amicus_regex = re.compile(r'(?:amicus brief|amici brief|amici curiae|amicus curiae|motion for leave to file and brief)(?: of)?', flags = re.IGNORECASE)
     amici_section = re.sub(r',? (:?january|february|april|may|june|july|august|september|october|november|december) [0-9]{1,2}.*', '', brief, flags = re.IGNORECASE)
     amici_section = re.sub(r'[0-9]+\. +Brief,', '', amici_section, flags = re.IGNORECASE)
 
@@ -36,11 +36,11 @@ def amici(brief:str) -> list:
 
     def clean(result):
         r = result.strip()
-        match = re.search(_amicus_regex, r)
+        match = re.search(r'brief(?: of)?(?: amicus curiae)? ', r, flags = re.IGNORECASE)
         if match and match.end() < len(result) / 2:
-            return r[:match.start()]
+            return r[match.start():]
         elif match and match.start() > len(result) / 2:
-            return r[match.end():]
+            return r[:match.end()]
         else:
             return r
     results = (r for r in _amici(unidecode(amici_section), amicus_separator, buffer, 0))
