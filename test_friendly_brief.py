@@ -24,10 +24,6 @@ with open(os.path.join('fixtures', 'posture.csv')) as fp:
     next(reader) # burn header
     cases_posture = list(reader)
 
-def run_checker(checker, cases):
-    for brief, expectation in cases:
-        yield checker, brief, expectation
-
 def check_amici(brief, expectation):
     observation = f.amici(brief)
     for expected_amicus in expectation:
