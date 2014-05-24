@@ -23,10 +23,10 @@ def main():
         writer = csv.writer(sys.stdout)
 
         amicus_header = ('brief_number', 'posture', 'amici')
-        writer.writerow(chain(brief_header, amicus_header))
+        writer.writerow(tuple(chain(brief_header, amicus_header)))
 
         for brief_row in reader:
             brief = brief_row[i]
             brief_annotations = (r.brief_number(brief), r.posture(brief))
             for amicus in r.amici(brief):
-                writer.writerow(chain(brief_row, brief_annotations, (amicus,)))
+                writer.writerow(tuple(chain(brief_row, brief_annotations, (amicus,))))
