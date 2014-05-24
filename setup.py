@@ -1,3 +1,4 @@
+import os
 from distutils.core import setup
 
 setup(name='commasearch',
@@ -5,7 +6,8 @@ setup(name='commasearch',
       author_email='_@thomaslevine.com',
       description='Find amicus curiae in briefs.',
       url='https://github.com/tlevine/friendly_brief',
-      py_modules = 'friendly_brief',
+      packages = 'friendly_brief',
+      scripts = os.path.join('bin', 'friendly-brief'),
       tests_require = ['nose'],
       version=__version__,
       license='AGPL',
