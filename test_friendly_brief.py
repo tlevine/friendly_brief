@@ -1,6 +1,7 @@
 import os, csv
 from collections import defaultdict
 from functools import partial
+from pprint import pprint
 
 import nose.tools as n
 
@@ -25,13 +26,16 @@ with open(os.path.join('fixtures', 'posture.csv')) as fp:
     cases_posture = list(reader)
 
 def check_amici(brief, expectation):
+    def standardize(nonstandard:str) -> str:
+        return nonstandard.replace(' ', '').lower()
     observation = list(f.amici(brief))
     for expected_amicus in expectation:
         for observed_amicus in observation:
-            if expected_amicus.lower() in observed_amicus.lower():
+            if standardize(expected_amicus) in standardize(observed_amicus):
                 break
         else:
-            raise AssertionError('The expected amicus "%s" could not be found.' % expected_amicus)
+            msg = 'The expected amicus "%s" could not be found among the following values:\n%s'
+            raise AssertionError(msg % (expected_amicus, pprint(observation)))
     if len(observation) < len(expectation):
         lengths = (len(observation), len(expectation))
         raise AssertionError('The amici were not broken up enough; there are %d amici, but only %d were found' % lengths)

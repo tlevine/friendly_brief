@@ -7,12 +7,12 @@ def amici(brief:str) -> list:
     return list(_amici(unidecode(brief), 0))
 
 def _amici(brief:str, start:int) -> iter:
-    _amicus_separator = re.compile(r'(,| and) ')
-    _buffer = 30
+    _amicus_separator = re.compile(r'(?:,| and) ')
+    _buffer = 20
 
     match = re.search(_amicus_separator, brief[start:])
     if match != None:
-        buffered_start = max(0, match.start() - _buffer)
+        buffered_start = max(0, start - _buffer)
         buffered_end = match.end() + _buffer
         yield brief[buffered_start:buffered_end]
         yield from _amici(brief, start + match.end())
