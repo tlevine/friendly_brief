@@ -45,9 +45,11 @@ But it is not among the following values output from the amici function.
 
     %s'''
             raise AssertionError(msg % (expected_amicus, brief, pformat(observation)))
+    lengths = (len(observation), len(expectation))
     if len(observation) < len(expectation):
-        lengths = (len(observation), len(expectation))
-        raise AssertionError('The amici were not broken up enough; there are %d amici, but only %d were found' % lengths)
+        raise AssertionError('The amici were not broken up enough; there are %d amici, but only %d were found.' % lengths)
+    if len(observation) > len(expectation) + 5:
+        raise AssertionError('The amici were too broken up; there are %d amici, but %d were reported.' % lengths)
 
 def check_brief_number(brief, expectation):
     n.assert_equal(f.brief_number(brief), int(expectation))
