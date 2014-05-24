@@ -40,7 +40,11 @@ def amici(brief:str) -> list:
             yield current_result
 
 def _amici(brief:str, buffer:int, start:int) -> iter:
-    _amicus_separator = re.compile(r'(?:,| and) ', flags = re.IGNORECASE)
+    if brief[start:].count(',') > brief[start:].count('and'):
+        _regex = r', '
+    else:
+        _regex = r'(?:,| and) '
+    _amicus_separator = re.compile(_regex, flags = re.IGNORECASE)
 
     match = re.search(_amicus_separator, brief[start:])
     buffered_start = max(0, start - buffer)
