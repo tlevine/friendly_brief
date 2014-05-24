@@ -2,7 +2,7 @@ import os, csv
 import re
 from collections import defaultdict
 from functools import partial
-from pprint import pprint
+from pprint import pformat
 
 import nose.tools as n
 
@@ -36,7 +36,7 @@ def check_amici(brief, expectation):
                 break
         else:
             msg = 'The expected amicus "%s" is supposed to be among the following values:\n%s'
-            raise AssertionError(msg % (expected_amicus, pprint(observation)))
+            raise AssertionError(msg % (expected_amicus, pformat(observation)))
     if len(observation) < len(expectation):
         lengths = (len(observation), len(expectation))
         raise AssertionError('The amici were not broken up enough; there are %d amici, but only %d were found' % lengths)

@@ -4,7 +4,11 @@ from collections import Counter
 from unidecode import unidecode
 
 def amici(brief:str) -> list:
-    return list(filter(None, _amici(unidecode(brief), 0)))
+    maybe = list(filter(None, _amici(unidecode(brief), 0)))
+    if len(maybe) == 0:
+        return [brief]
+    else:
+        return maybe
 
 def _amici(brief:str, start:int) -> iter:
     _amicus_separator = re.compile(r'(?:,| and) ')
