@@ -33,7 +33,7 @@ def _amici(brief:str, buffer:int, start:int) -> iter:
     match = re.search(_amicus_separator, brief[start:])
     buffered_start = max(0, start - buffer)
     if match != None:
-        buffered_end = start + match.end() + buffer
+        buffered_end = start + match.start() + buffer
         result = brief[buffered_start:buffered_end]
         if result != '' and len(result) > 8:
             yield result
