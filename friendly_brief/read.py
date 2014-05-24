@@ -28,7 +28,7 @@ def amici(brief:str) -> list:
     buffer = 0
 
     l = amici_section.lower()
-    if l.count(',') > 3 or ', and' in l or l.count(',') > l.count('and'):
+    if l.count(',') > 3 or ', and' in l or l.count(',') > l.count('and') or l.count(',') == l.count(', inc'):
         _regex = r', '
     else:
         _regex = r'(?:,| and) '
@@ -36,7 +36,7 @@ def amici(brief:str) -> list:
 
     results = (r.strip() for r in _amici(unidecode(amici_section), amicus_separator, buffer, 0))
     for previous_result, current_result, next_result in window(chain(['  '], results, ['  ']), n = 3):
-        if next_result.count(' ') == 0 and  'inc' in next_result.lower():
+        if 'inc.' in next_result.lower():
             yield current_result + ', ' + next_result
             next(results)
         elif 'et al.' in next_result.lower():
