@@ -1,12 +1,18 @@
-import os, csv, json
+import os, csv
+from collections import defaultdict
 from functools import partial
 
 import nose.tools as n
 
 import friendly_brief as f
 
-with open(os.path.join('fixtures', 'amici.json')) as fp:
-    cases_amici = json.load(fp)
+with open(os.path.join('fixtures', 'amici.csv')) as fp:
+    reader = csv.reader(fp)
+    next(reader) # burn header
+    cases_posture = defaultdict(lambda:set())
+    for brief, amicus in reader:
+        cases_posture[brief].add(amicus)
+    cases_posture = list(cases_posture.items()`)
 
 with open(os.path.join('fixtures', 'posture.csv')) as fp:
     reader = csv.reader(fp)
@@ -18,10 +24,13 @@ def run_test(checker, cases):
         yield checker, brief, expectation
 
 def check_amici(brief, expectation):
-    def standard(xs):
-        return [x.lower() for x in sorted(xs)]
     observation = f.amici(brief)
-    n.assert_list_equal(standard(observation), standard(expectation))
+    for expected_amicus in expectation:
+        for observed_amicus in observation:
+            if expected_amicus in observed_amicus:
+                break
+        else:
+            raise AssertionError('The expected amicus "%s" could not be found.' % expected_amicus)
 
 def check_brief_number(brief, expectation):
     n.assert_equal(f.brief_number(brief), expectation)
