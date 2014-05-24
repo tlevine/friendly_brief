@@ -1,24 +1,21 @@
+import os, csv, json
+from functools import partial
+
 import nose.tools as n
 
 import friendly_brief as f
 
-testcases = [
-    ("2.    Brief, BRIEF AMICUS CURIAE OF THE GEORGIA ASSOCIATION OF BLACK ELECTED OFFICIALS IN SUPPORT OF APPELLANTS, July 19, 1996", ['THE GEORGIA ASSOCIATION OF BLACK ELECTED OFFICIALS']),
-    ("2.       Brief of amici Curiae, The Sikh Coalition, American-Arab Anti-Discrimination Committee, Discrimination and National Security Initiative, Muslim Public Affairs Council. Sikh American Legal Defense and Education Fund, Sikh Council on Religion and E ducation, South Asian Americans Leading Together and United Sikhs in Support of Respondent Iqubal", [
-        "The Sikh Coalition",
-        "American-Arab Anti-Discrimination Committee",
-        "Discrimination and National Security Initiative",
-        "Muslim Public Affairs Council",
-        "Sikh American Legal defense and Education fund",
-        "Sikh Council on Religion and Education",
-        "South Asian Americans Leading Together",
-    ]),
-    ("7.    Brief, BRIEF OF AMICI CURIAE NOW LEGAL DEFENSE AND EDUCATION FUND, LAWYERS COMMITTEE FOR HUMAN RIGHTS, AND ALLARD K. LOWENSTEIN INTERNATIONAL HUMAN RIGHTS CLINIC IN SUPPORT OF RESPONDENTS, August 10, 2001, 2001 U.S. S. Ct. Briefs LEXIS 43 ", [
-        "Now Legal Defense and Education Fund",
-        "Lawyers Committee for Human Rights",
-        "Allard L Lowestein International Human Rights Clinic",
-    ]),
-]
+with open(os.path.join('fixtures', 'amici.json')) as fp:
+    cases_amici = json.load(fp)
+
+with open(os.path.join('fixtures', 'posture.csv')) as fp:
+    reader = csv.reader(fp)
+    next(reader) # burn header
+    cases_posture = list(reader)
+
+def run_test(checker, cases):
+    for brief, expectation in cases:
+        yield checker, brief, expectation
 
 def check_amici(brief, expectation):
     def standard(xs):
@@ -26,11 +23,11 @@ def check_amici(brief, expectation):
     observation = f.amici(brief)
     n.assert_list_equal(standard(observation), standard(expectation))
 
-@n.nottest
-def test_amici():
-    for brief, expectation in testcases:
-        yield check_amici, brief, expectation
+def check_brief_number(brief, expectation):
+    n.assert_equal(f.brief_number(brief), expectation)
 
-def test_brief_number():
-    brief = '6.    Amicus Brief, BRIEF OF LIBERTY LEGAL FOUNDATION AS AMICUS CURIAE IN SUPPORT OF PETITIONERS, February 8, 2012, 2012 U.S. S. Ct. Briefs LEXIS 709 '
-    n.assert_equal(f.brief_number(brief), 6)
+def check_posture():
+
+test_amici = partial(run_test, check_amici, cases_amici)
+test_brief_number = partial(run_test, check_brief_number, cases_brief_number)
+test_posture = partial(run_test, check_posture, cases_posture)
