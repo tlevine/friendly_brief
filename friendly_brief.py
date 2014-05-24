@@ -4,11 +4,18 @@ from collections import Counter
 from unidecode import unidecode
 
 def amici(brief:str) -> list:
-    decoded = unidecode(brief)
-    after_curiae = re.sub(r'curiae', '\t\t\t', decoded, flags = re.IGNORECASE, count = 1).partition('\t\t\t')[2].strip(', ').replace('\n',' ')
-    before_date = re.sub(r'(january|february|march|april|may|june|july|august|september|october|november|december).*$', '', after_curiae, flags = re.IGNORECASE)
-    newline_delimited = re.sub(r'([a-zA-Z]{2})[,.] ',r'\1\n', before_date)
-    return filter(None, newline_delimited.split('\n'))
+    return list(_amici(unidecode(brief), 0))
+
+def _amici(brief:str, start:int) -> iter:
+    _amicus_separator = re.compile(r'(,| and) ')
+    _buffer = 30
+
+    match = re.search(_amicus_separator, brief[start:])
+    if match != None:
+        buffered_start = max(0, match.start() - _buffer)
+        buffered_end = match.end() + _buffer
+        yield brief[buffered_start:buffered_end]
+        yield from _amici(brief, start + match.end())
 
 def brief_number(brief:str) -> int:
     return int(re.sub('[^0-9].+$', '', brief))
