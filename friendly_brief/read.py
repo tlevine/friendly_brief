@@ -55,12 +55,12 @@ def _amici(brief:str, buffer:int, start:int) -> iter:
                 nextmatch = re.search(_amicus_separator, brief[start + match.end()])
                 if nextmatch != None:
                     # Replace the result.
-                    result = brief[buffered_start:start + nextmatch.end() + buffer]
+                    result = brief[buffered_start:start + nextmatch.end() + buffer].strip()
 
         if re.search(r'[a-z]{4}\.', result):
             match = re.match(r'(.*[a-z]{4})\.(.*)$', result)
-            yield match.group(1)
-            yield match.group(2)
+            yield match.group(1).strip()
+            yield match.group(2).strip()
         elif result == '':
             pass
         else:
