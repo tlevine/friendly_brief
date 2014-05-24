@@ -40,7 +40,8 @@ def amici(brief:str) -> list:
             yield current_result
 
 def _amici(brief:str, buffer:int, start:int) -> iter:
-    if brief[start:].count(',') > brief[start:].count('and'):
+    l = brief[start:].lower()
+    if l.count(',') > l.count('and'):
         _regex = r', '
     else:
         _regex = r'(?:,| and) '
