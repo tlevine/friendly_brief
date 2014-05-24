@@ -1,4 +1,5 @@
 import os, csv
+import re
 from collections import defaultdict
 from functools import partial
 from pprint import pprint
@@ -27,7 +28,7 @@ with open(os.path.join('fixtures', 'posture.csv')) as fp:
 
 def check_amici(brief, expectation):
     def standardize(nonstandard:str) -> str:
-        return nonstandard.replace(' ', '').lower()
+        return re.sub(r'[ .]', '', nonstandard.lower())
     observation = f.amici(brief)
     for expected_amicus in expectation:
         for observed_amicus in observation:

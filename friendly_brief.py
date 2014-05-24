@@ -8,12 +8,12 @@ def amici(brief:str) -> list:
 
 def _amici(brief:str, start:int) -> iter:
     _amicus_separator = re.compile(r'(?:,| and) ')
-    _buffer = 20
+    _buffer = 5
 
     match = re.search(_amicus_separator, brief[start:])
     if match != None:
         buffered_start = max(0, start - _buffer)
-        buffered_end = match.end() + _buffer
+        buffered_end = start + match.end() + _buffer
         yield brief[buffered_start:buffered_end]
         child = _amici(brief, start + match.end())
         if child != None:
