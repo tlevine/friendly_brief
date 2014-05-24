@@ -47,4 +47,4 @@ def posture(brief:str) -> int:
     if len(code_phrase_observations.keys()) == 1:
         return list(code_phrase_observations.keys())[0]
     else:
-        return None
+        return ''

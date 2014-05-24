@@ -53,7 +53,7 @@ def check_brief_number(brief, expectation):
     n.assert_equal(f.brief_number(brief), int(expectation))
 
 def check_posture(brief, expectation):
-    n.assert_equal(f.posture(brief), int(expectation))
+    n.assert_equal(str(f.posture(brief)), expectation)
 
 def test():
     for checker, cases in [
