@@ -30,3 +30,16 @@ The resulting CSV file is written to stdout.
 How it works
 ---------------
 Let's discuss how each of the inferences is made.
+
+Brief number
+~~~~~~~~~~~~~
+We take the first unbroken group of digits as the brief number.
+For example, the following brief title starts with a "1", then a "9",
+and then a ".".
+
+    19.    Brief, BRIEF AMICUS CURIAE OF SOCIAL SCIENCE AND COMPARATIVE LAW SCHOLARS IN SUPPORT OF NEITHER PARTY, June 1, 2001, 2001 U.S. S. Ct. Briefs LEXIS 718 
+
+We stop upon noticing the non-digit "." and use "19" as the brief number.
+
+Position
+~~~~~~~~~~~~
