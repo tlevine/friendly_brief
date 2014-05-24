@@ -28,7 +28,7 @@ with open(os.path.join('fixtures', 'posture.csv')) as fp:
 def check_amici(brief, expectation):
     def standardize(nonstandard:str) -> str:
         return nonstandard.replace(' ', '').lower()
-    observation = list(f.amici(brief))
+    observation = f.amici(brief)
     for expected_amicus in expectation:
         for observed_amicus in observation:
             if standardize(expected_amicus) in standardize(observed_amicus):
