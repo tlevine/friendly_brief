@@ -1,6 +1,8 @@
 import re
+from itertools import chain
 from collections import Counter
 
+from sliding_window import window
 from unidecode import unidecode
 
 def amici(brief:str) -> list:
@@ -24,7 +26,18 @@ def amici(brief:str) -> list:
 #   else:
 #       buffer = 0
     buffer = 0
-    return list(_amici(unidecode(amici_section), buffer, 0))
+
+    results = _amici(unidecode(amici_section), buffer, 0)
+    for previous_result, current_result, next_result in window(chain([''], results, ['']), n = 3):
+        if next_result.count(' ') == 0 and  'inc' in next_result.lower():
+            yield current_result + ', ' + next_result
+        elif current_result.count(' ') == 0:
+            if previous_result.count(' ') == 0 and next_result.count(' ') == 0:
+                yield current_result
+        elif previous_result.count(' ') == 0:
+            yield previous_result + ' and ' + current_result
+        else:
+            yield current_result
 
 def _amici(brief:str, buffer:int, start:int) -> iter:
     _amicus_separator = re.compile(r'(?:,| and) ', flags = re.IGNORECASE)
