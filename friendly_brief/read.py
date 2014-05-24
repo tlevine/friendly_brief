@@ -34,7 +34,7 @@ def amici(brief:str) -> list:
     if l.count(';') > 0:
         _regex = r'; '
     elif l.count(',') > 3 or ', and' in l or l.count(',') > l.count('and') or l.count(',') == l.count(', inc'):
-        _regex = r'(?:,| and the) '
+        _regex = r'(?:,| and the| and other) '
     else:
         _regex = r'(?:,| and) '
     amicus_separator = re.compile(_regex, flags = re.IGNORECASE)
