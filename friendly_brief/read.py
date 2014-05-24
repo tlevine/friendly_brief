@@ -41,7 +41,7 @@ def amici(brief:str) -> list:
 
     def clean(result):
         r = result.strip()
-        r = re.sub(r' ?as ?$', '', r, flags = re.IGNORECASE)
+        r = re.sub(r' as ?$', '', r, flags = re.IGNORECASE)
         r = re.sub(r'^ ?of the ?', '', r, flags = re.IGNORECASE)
         match = re.search(r'brief(?: for| of)?(?: the)?(?: amic(?:us|i) curiae)? ', r, flags = re.IGNORECASE)
         if match and match.start() < len(result) / 2:
@@ -57,7 +57,7 @@ def amici(brief:str) -> list:
     for previous_result, current_result, next_result in slider:
         if re.match(r'^(|as|amic(i|us) curiae)$', current_result, flags = re.IGNORECASE):
             pass
-        elif 'inc.' in next_result.lower():
+        elif re.match(r'^[^a-z]{0,2}(inc|jr)[^a-z]{0,2}', next_result, flags = re.IGNORECASE):
             yield current_result + ', ' + next_result
             next(slider)
         elif re.match(r'^et al\.?,?$', next_result, flags = re.IGNORECASE):
