@@ -103,4 +103,15 @@ In the above example, the pieces are expanded by up 20 letters in
 each direction. In other cases, the expansion is smaller; here is
 how the size of the expansion is chosen.
 
-* If th
+1. We first check whether the brief title contains both a comma and the word "and".
+   In such cases, the expansion is 20 letters in each direction. The reasoning
+   for this is that it is likely that an amicus's name contains
+   either a comma or the word "and" and that the amicus will thus
+   get split erroneously; the large expansion is to avoid breaking
+   the amicus's name.
+2. If the comma and "and" criterion was not met, we check for
+   a phrase like "Inc.". If it contains a phrase like "Inc.",
+   the expansion is five letters in each direction. Amici often have
+   names like "Cogswell Cogs, Inc.", and the intent of this rule
+   is to include the "Inc." in the name of the amicus.
+3. If the above two criteria were not met, no expansion is used (zero letters).
