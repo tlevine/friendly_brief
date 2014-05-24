@@ -1,7 +1,7 @@
 import re
 from unidecode import unidecode
 
-def amici(brief:str) -> int:
+def amici(brief:str) -> list:
     decoded = unidecode(brief)
     after_curiae = re.sub(r'curiae', '\t\t\t', decoded, flags = re.IGNORECASE, count = 1).partition('\t\t\t')[2].strip(', ').replace('\n',' ')
     before_date = re.sub(r'(january|february|march|april|may|june|july|august|september|october|november|december).*$', '', after_curiae, flags = re.IGNORECASE)
@@ -10,3 +10,6 @@ def amici(brief:str) -> int:
 
 def brief_number(brief:str) -> int:
     return int(re.sub('[^0-9].+$', '', brief))
+
+def posture(brief:str) -> int:
+    return None

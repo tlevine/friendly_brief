@@ -28,7 +28,7 @@ def check_amici(brief, expectation):
     observation = f.amici(brief)
     for expected_amicus in expectation:
         for observed_amicus in observation:
-            if expected_amicus in observed_amicus:
+            if expected_amicus.lower() in observed_amicus.lower():
                 break
         else:
             raise AssertionError('The expected amicus "%s" could not be found.' % expected_amicus)
