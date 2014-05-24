@@ -31,7 +31,9 @@ def amici(brief:str) -> list:
     buffer = 0
 
     l = amici_section.lower()
-    if l.count(',') > 3 or ', and' in l or l.count(',') > l.count('and') or l.count(',') == l.count(', inc'):
+    if l.count(';') > 0:
+        _regex = r'; '
+    elif l.count(',') > 3 or ', and' in l or l.count(',') > l.count('and') or l.count(',') == l.count(', inc'):
         _regex = r', '
     else:
         _regex = r'(?:,| and) '
