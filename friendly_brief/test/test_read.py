@@ -58,6 +58,11 @@ def check_amici_sans_brief(brief, _):
     for observed_amicus in f.amici(brief):
        n.assert_not_in('brief', observed_amicus.lower())
 
+def check_amici_sans_startswith_junk(brief, _):
+    for junk in ['for the']:
+        for observed_amicus in f.amici(brief):
+           n.assert_false(observed_amicus.lower().startswith(junk))
+
 def check_amici_sans_literal_junk(brief, _):
     for junk in ['', 'et al.', 'as','l.l.c.']:
          for observed_amicus in f.amici(brief):
@@ -74,6 +79,7 @@ def test():
         (check_amici, cases_amici),
         (check_amici_sans_brief, cases_amici),
         (check_amici_sans_literal_junk, cases_amici),
+        (check_amici_sans_startswith_junk, cases_amici),
         (check_brief_number, cases_brief_number),
         (check_posture, cases_posture),
     ]:
