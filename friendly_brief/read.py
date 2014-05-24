@@ -46,7 +46,7 @@ def _amici(brief:str, buffer:int, start:int) -> iter:
     buffered_start = max(0, start - buffer)
     if match != None:
         buffered_end = start + match.start() + buffer
-        result = brief[buffered_start:buffered_end].strip()
+        result = brief[buffered_start:buffered_end]
 
         if result.count(' ') == 0:
             if ' and' == brief[buffered_end+1:buffered_end + 5]:
@@ -55,12 +55,12 @@ def _amici(brief:str, buffer:int, start:int) -> iter:
                 nextmatch = re.search(_amicus_separator, brief[start + match.end()])
                 if nextmatch != None:
                     # Replace the result.
-                    result = brief[buffered_start:start + nextmatch.end() + buffer].strip()
+                    result = brief[buffered_start:start + nextmatch.end() + buffer]
 
         if re.search(r'[a-z]{4}\.', result):
             match = re.match(r'(.*[a-z]{4})\.(.*)$', result)
-            yield match.group(1).strip()
-            yield match.group(2).strip()
+            yield match.group(1)
+            yield match.group(2)
         elif result == '':
             pass
         else:
