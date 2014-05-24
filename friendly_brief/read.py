@@ -14,8 +14,9 @@ def amici(brief:str) -> list:
     if match != None and match.start() > len(amici_section) / 2:
         amici_section = amici_section[:match.start()]
 
-    if amici_section.lower().count(' support ') <= 1:
-        amici_section = re.sub(r' support .*', '', amici_section, flags = re.IGNORECASE)
+#   if amici_section.lower().count(' support ') <= 1:
+#       amici_section = re.sub(r' support .*', '', amici_section, flags = re.IGNORECASE)
+    amici_section = re.sub(r' support of .*', '', amici_section, flags = re.IGNORECASE)
 
     if ',' in amici_section and ' and ' in amici_section.lower():
         buffer = 20
