@@ -54,6 +54,9 @@ But it is not among the following values output from the amici function.
         msg = 'The amici were too broken up; %d amici were reported, but there are only supposed to be %d:\n' + '\n* '.join(observation)
         raise AssertionError(msg % lengths)
 
+    for observed_amicus in observation:
+        n.assert_less(len(observed_amicus), 60, msg = observation)
+
 def check_amici_sans_brief(brief, _):
     for observed_amicus in f.amici(brief):
        n.assert_not_in('brief', observed_amicus.lower())
@@ -62,10 +65,6 @@ def check_amici_sans_startswith_junk(brief, _):
     for junk in ['for the', 'amic']:
         for observed_amicus in f.amici(brief):
            n.assert_false(observed_amicus.lower().startswith(junk), msg = observed_amicus)
-
-def check_amici_length(brief, _):
-    for observed_amicus in f.amici(brief):
-        n.assert_less(len(observed_amicus), 60, msg = observed_amicus)
 
 def check_amici_sans_literal_junk(brief, _):
     for junk in ['', 'et al.', 'as','l.l.c.']:
@@ -84,7 +83,6 @@ def test():
         (check_amici_sans_brief, cases_amici),
         (check_amici_sans_literal_junk, cases_amici),
         (check_amici_sans_startswith_junk, cases_amici),
-        (check_amici_length, cases_amici),
         (check_brief_number, cases_brief_number),
         (check_posture, cases_posture),
     ]:
