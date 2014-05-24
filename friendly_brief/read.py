@@ -53,12 +53,12 @@ def amici(brief:str) -> list:
     results = map(clean, map(clean, _amici(unidecode(amici_section), amicus_separator, buffer, 0)))
     slider = window(chain(['  '], results, ['  ']), n = 3)
     for previous_result, current_result, next_result in slider:
-        if current_result.lower() in ['', 'as']:
+        if re.match(r'^(|as|amic(i|us) curiae)$', current_result, flags = re.IGNORECASE):
             pass
         elif 'inc.' in next_result.lower():
             yield current_result + ', ' + next_result
             next(slider)
-        elif re.match(r'et al\.?', next_result, flags = re.IGNORECASE):
+        elif re.match(r'^et al\.?$', next_result, flags = re.IGNORECASE):
             yield current_result + ', ' + next_result
             next(slider)
         else:
@@ -81,7 +81,7 @@ def _amici(brief:str, amicus_separator, buffer:int, start:int) -> iter:
                     result = brief[buffered_start:start + nextmatch.end() + buffer]
 
         if re.search(r'[a-z]{4}\.', result):
-            match = re.match(r'(.*[a-z]{4})\.(.*)$', result)
+            match = re.match(r'^(.*[a-z]{4})\.(.*)$', result)
             yield match.group(1)
             yield match.group(2)
         elif result == '':
