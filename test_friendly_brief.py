@@ -25,13 +25,16 @@ with open(os.path.join('fixtures', 'posture.csv')) as fp:
     cases_posture = list(reader)
 
 def check_amici(brief, expectation):
-    observation = f.amici(brief)
+    observation = list(f.amici(brief))
     for expected_amicus in expectation:
         for observed_amicus in observation:
             if expected_amicus.lower() in observed_amicus.lower():
                 break
         else:
             raise AssertionError('The expected amicus "%s" could not be found.' % expected_amicus)
+    if len(observation) < len(expectation):
+        lengths = (len(observation), len(expectation))
+        raise AssertionError('The amici were not broken up enough; there are %d amici, but only %d were found' % lengths)
 
 def check_brief_number(brief, expectation):
     n.assert_equal(f.brief_number(brief), int(expectation))
