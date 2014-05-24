@@ -67,9 +67,14 @@ def check_posture(brief, expectation):
 def test():
     for checker, cases in [
         (check_amici, cases_amici),
-        (check_amici_sans_brief, cases_amici),
+#       (check_amici_sans_brief, cases_amici),
         (check_brief_number, cases_brief_number),
         (check_posture, cases_posture),
     ]:
         for brief, expectation in cases:
             yield checker, brief, expectation
+
+def test_remove_date():
+    observation = f._remove_date("19.    Amicus Brief, BRIEF FOR AMICI CURIAE ADULT PRE-ICWA INDIAN ADOPTEES SUPPORTING BIRTH FATHER AND THE CHEROKEE NATION, March 28, 2013, 2013 U.S. S. Ct. Briefs  1711")
+    expectation = "19.    Amicus Brief, BRIEF FOR AMICI CURIAE ADULT PRE-ICWA INDIAN ADOPTEES SUPPORTING BIRTH FATHER AND THE CHEROKEE NATION"
+    n.assert_equal(observation, expectation)
