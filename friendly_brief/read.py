@@ -42,7 +42,7 @@ def amici(brief:str) -> list:
     def clean(result):
         r = result.strip()
         r = re.sub(r' as ?$', '', r, flags = re.IGNORECASE)
-        r = re.sub(r'^ ?of the ?', '', r, flags = re.IGNORECASE)
+        r = re.sub(r'^ ?(of|and) ?', '', r, flags = re.IGNORECASE)
         match = re.search(r'brief(?: for| of)?(?: the)?(?: amic(?:us|i) curiae)? ', r, flags = re.IGNORECASE)
         if match and match.start() < len(result) / 2:
             return r[match.end():]
