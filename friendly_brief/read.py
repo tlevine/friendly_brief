@@ -11,7 +11,7 @@ def amici(brief:str) -> list:
     if match != None and match.start() < 30:
         amici_section = amici_section[match.end():]
     match = re.search(r'amici (?:curiae)?', amici_section, flags = re.IGNORECASE)
-    if match != None and match.start() > 30:
+    if match != None and match.start() > len(amici_section) / 2:
         amici_section = amici_section[:match.start()]
 
     if amici_section.lower().count(' support ') <= 1:
