@@ -10,7 +10,7 @@ setup(name='commasearch',
       scripts = os.path.join('bin', 'friendly-brief'),
       install_requires = ['unidecode>=0.04.16'],
       tests_require = ['nose'],
-      version=__version__,
+      version='0.0.1',
       license='AGPL',
       classifiers=[
           'Programming Language :: Python :: 3.4',
