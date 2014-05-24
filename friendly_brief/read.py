@@ -7,12 +7,12 @@ def amici(brief:str) -> list:
     amici_section = re.sub(r',? (:?january|february|april|may|june|july|august|september|october|november|december) [0-9]{1,2}.*', '', brief, flags = re.IGNORECASE)
     amici_section = re.sub(r'[0-9]+\. +Brief,', '', amici_section, flags = re.IGNORECASE)
 
-    _amicus = re.compile(r'(?:amici|amicus) (?:curiae|brief)?', flags = re.IGNORECASE)
+    _amicus = re.compile(r'(?:amicus brief|amici brief|amici curiae|amicus curiae|motion for leave to file and brief)', flags = re.IGNORECASE)
     match = re.search(_amicus, amici_section)
     if match != None and match.start() < 30:
         amici_section = amici_section[match.end():]
     match = re.search(_amicus, amici_section)
-    if match != None and match.start() > len(amici_section) / 2:
+    if match != None and match.start() > len(amici_section)*2/5:
         amici_section = amici_section[:match.start()]
 
 #   if amici_section.lower().count(' support ') <= 1:
@@ -25,7 +25,7 @@ def amici(brief:str) -> list:
         buffer = 5
     else:
         buffer = 0
-    return list(filter(None, _amici(unidecode(amici_section), buffer, 0)))
+    return list(_amici(unidecode(amici_section), buffer, 0))
 
 def _amici(brief:str, buffer:int, start:int) -> iter:
     _amicus_separator = re.compile(r'(?:,| and) ', flags = re.IGNORECASE)
@@ -34,7 +34,9 @@ def _amici(brief:str, buffer:int, start:int) -> iter:
     buffered_start = max(0, start - buffer)
     if match != None:
         buffered_end = start + match.end() + buffer
-        yield brief[buffered_start:buffered_end]
+        result = brief[buffered_start:buffered_end]
+        if result != '' and len(result) > 8:
+            yield result
         child = _amici(brief, buffer, start + match.end())
         if child != None:
             yield from child
