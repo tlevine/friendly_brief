@@ -38,12 +38,13 @@ def amici(brief:str) -> list:
         r = result.strip()
         match = re.search(r'brief(?: of)?(?: amicus curiae)? ', r, flags = re.IGNORECASE)
         if match and match.end() < len(result) / 2:
-            return r[match.start():]
+            return r[match.end():]
         elif match and match.start() > len(result) / 2:
-            return r[:match.end()]
+            return r[:match.start()]
         else:
             return r
-    results = (r for r in _amici(unidecode(amici_section), amicus_separator, buffer, 0))
+
+    results = map(clean, _amici(unidecode(amici_section), amicus_separator, buffer, 0))
     for previous_result, current_result, next_result in window(chain(['  '], results, ['  ']), n = 3):
         if 'inc.' in next_result.lower():
             yield current_result + ', ' + next_result
