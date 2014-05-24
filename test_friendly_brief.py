@@ -35,11 +35,11 @@ def check_amici(brief, expectation):
             if standardize(expected_amicus) in standardize(observed_amicus):
                 break
         else:
-            msg = '''The expected amicus "%s", from the following brief
+            msg = '''The expected amicus "%s" should be found in the following brief.
 
     %s
 
-is supposed to be among the following values:
+But it is not among the following values output from the amici function.
 
     %s'''
             raise AssertionError(msg % (expected_amicus, brief, pformat(observation)))
