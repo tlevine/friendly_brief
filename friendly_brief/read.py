@@ -4,13 +4,14 @@ from collections import Counter
 from unidecode import unidecode
 
 def amici(brief:str) -> list:
-    if ' and ' in brief.lower() and ',' in brief:
+    amici_section = re.sub(r' (:?january|february|april|may|june|july|august|september|october|november|december) [0-9]{1,2}.*', '', brief, flags = re.IGNORECASE)
+    if ' and ' in amici_section.lower() and ',' in amici_section:
         buffer = 20
-    elif re.search(r' inc[^a-z]', brief, flags = re.IGNORECASE):
+    elif re.search(r' inc[^a-z]', amici_section, flags = re.IGNORECASE):
         buffer = 5
     else:
         buffer = 0
-    return list(filter(None, _amici(unidecode(brief), buffer, 0)))
+    return list(filter(None, _amici(unidecode(amici_section), buffer, 0)))
 
 def _amici(brief:str, buffer:int, start:int) -> iter:
     _amicus_separator = re.compile(r'(?:,| and) ')
