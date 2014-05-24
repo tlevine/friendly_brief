@@ -35,7 +35,11 @@ def _amici(brief:str, buffer:int, start:int) -> iter:
     if match != None:
         buffered_end = start + match.start() + buffer
         result = brief[buffered_start:buffered_end]
-        if result != '' and len(result) > 8:
+        if result.count(' ') == 0:
+            # Probably the beginning of an amicus like
+            # "Discrimination and National Security Initiative"
+            pass
+        elif result != '' and len(result) > 8:
             yield result
         child = _amici(brief, buffer, start + match.end())
         if child != None:
