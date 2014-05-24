@@ -16,7 +16,7 @@ def amici(brief:str) -> list:
     return list(filter(None, _amici(unidecode(amici_section), buffer, 0)))
 
 def _amici(brief:str, buffer:int, start:int) -> iter:
-    _amicus_separator = re.compile(r'(?:,| and) ')
+    _amicus_separator = re.compile(r'(?:,| and) ', flags = re.IGNORECASE)
 
     match = re.search(_amicus_separator, brief[start:])
     buffered_start = max(0, start - buffer)
