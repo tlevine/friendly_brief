@@ -20,15 +20,16 @@ testcases = [
     ]),
 ]
 
-def check_amicus(brief, expectation):
+def check_amici(brief, expectation):
     def standard(xs):
         return [x.lower() for x in sorted(xs)]
-    observation = f.amicus(brief)
+    observation = f.amici(brief)
     n.assert_list_equal(standard(observation), standard(expectation))
 
-def test_amicus():
+@n.nottest
+def test_amici():
     for brief, expectation in testcases:
-        yield check_amicus, brief, expectation
+        yield check_amici, brief, expectation
 
 def test_brief_number():
     brief = '6.    Amicus Brief, BRIEF OF LIBERTY LEGAL FOUNDATION AS AMICUS CURIAE IN SUPPORT OF PETITIONERS, February 8, 2012, 2012 U.S. S. Ct. Briefs LEXIS 709 '
