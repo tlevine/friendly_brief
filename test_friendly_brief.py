@@ -6,6 +6,11 @@ import nose.tools as n
 
 import friendly_brief as f
 
+with open(os.path.join('fixtures', 'brief_number.csv')) as fp:
+    reader = csv.reader(fp)
+    next(reader) # burn header
+    cases_brief_number = list(reader)
+
 with open(os.path.join('fixtures', 'amici.csv')) as fp:
     reader = csv.reader(fp)
     next(reader) # burn header
