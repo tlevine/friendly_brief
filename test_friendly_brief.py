@@ -1,6 +1,6 @@
 import nose.tools as n
 
-from friendly_brief import amicus
+import friendly_brief as f
 
 testcases = [
     ("2.    Brief, BRIEF AMICUS CURIAE OF THE GEORGIA ASSOCIATION OF BLACK ELECTED OFFICIALS IN SUPPORT OF APPELLANTS, July 19, 1996", ['THE GEORGIA ASSOCIATION OF BLACK ELECTED OFFICIALS']),
@@ -20,13 +20,16 @@ testcases = [
     ]),
 ]
 
-def standard(xs):
-    return [x.lower() for x in sorted(xs)]
-
 def check_amicus(brief, expectation):
-    observation = amicus(brief)
+    def standard(xs):
+        return [x.lower() for x in sorted(xs)]
+    observation = f.amicus(brief)
     n.assert_list_equal(standard(observation), standard(expectation))
 
 def test_amicus():
     for brief, expectation in testcases:
         yield check_amicus, brief, expectation
+
+def test_brief_number():
+    brief = '6.    Amicus Brief, BRIEF OF LIBERTY LEGAL FOUNDATION AS AMICUS CURIAE IN SUPPORT OF PETITIONERS, February 8, 2012, 2012 U.S. S. Ct. Briefs LEXIS 709 '
+    n.assert_equal(f.brief_number(brief), 6)
