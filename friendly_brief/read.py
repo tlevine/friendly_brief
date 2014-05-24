@@ -38,11 +38,12 @@ def amici(brief:str) -> list:
     for previous_result, current_result, next_result in window(chain(['  '], results, ['  ']), n = 3):
         if next_result.count(' ') == 0 and  'inc' in next_result.lower():
             yield current_result + ', ' + next_result
-        elif current_result.count(' ') == 0:
-            if previous_result.count(' ') == 0 and next_result.count(' ') == 0:
-                yield current_result
-        elif previous_result.count(' ') == 0:
-            yield previous_result + ' and ' + current_result
+            next(results)
+        elif 'et al.' in next_result.lower():
+            yield current_result + ', ' + next_result
+            next(results)
+#       elif previous_result.count(' ') == 0:
+#           yield previous_result + ' and ' + current_result
         else:
             yield current_result
 
