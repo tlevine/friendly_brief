@@ -35,7 +35,7 @@ def check_amici(brief, expectation):
             if standardize(expected_amicus) in standardize(observed_amicus):
                 break
         else:
-            msg = 'The expected amicus "%s" could not be found among the following values:\n%s'
+            msg = 'The expected amicus "%s" is supposed to be among the following values:\n%s'
             raise AssertionError(msg % (expected_amicus, pprint(observation)))
     if len(observation) < len(expectation):
         lengths = (len(observation), len(expectation))
