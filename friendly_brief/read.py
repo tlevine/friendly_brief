@@ -7,7 +7,7 @@ from unidecode import unidecode
 
 def amici(brief:str) -> list:
     _amicus_regex = re.compile(r'(?:amicus brief|amici brief|amici curiae|amicus curiae|motion for leave to file and brief)(?: of)?', flags = re.IGNORECASE)
-    amici_section = re.sub(r',? (:?january|february|april|may|june|july|august|september|october|november|december) [0-9]{1,2}.*', '', brief, flags = re.IGNORECASE)
+    amici_section = re.sub(r',? (:?january|february|april|may|june|july|august|september|october|november|december) [0-9]{1,2}.*$', '', brief, flags = re.IGNORECASE)
     amici_section = re.sub(r'[0-9]+\. +Brief,', '', amici_section, flags = re.IGNORECASE)
 
     match = re.search(_amicus_regex, amici_section)
@@ -44,7 +44,8 @@ def amici(brief:str) -> list:
         else:
             return r
 
-    results = map(clean, _amici(unidecode(amici_section), amicus_separator, buffer, 0))
+    # Clean twice
+    results = map(clean, map(clean, _amici(unidecode(amici_section), amicus_separator, buffer, 0)))
     for previous_result, current_result, next_result in window(chain(['  '], results, ['  ']), n = 3):
         if 'inc.' in next_result.lower():
             yield current_result + ', ' + next_result
