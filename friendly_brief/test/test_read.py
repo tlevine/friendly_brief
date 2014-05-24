@@ -6,14 +6,16 @@ from pprint import pformat
 
 import nose.tools as n
 
-import friendly_brief as f
+import friendly_brief.read as f
 
-with open(os.path.join('fixtures', 'brief_number.csv')) as fp:
+FIXTURES = os.path.join('friendly_brief', 'test', 'fixtures')
+
+with open(os.path.join(FIXTURES, 'brief_number.csv')) as fp:
     reader = csv.reader(fp)
     next(reader) # burn header
     cases_brief_number = list(reader)
 
-with open(os.path.join('fixtures', 'amici.csv')) as fp:
+with open(os.path.join(FIXTURES, 'amici.csv')) as fp:
     reader = csv.reader(fp)
     next(reader) # burn header
     cases_amici = defaultdict(lambda:set())
@@ -21,7 +23,7 @@ with open(os.path.join('fixtures', 'amici.csv')) as fp:
         cases_amici[brief].add(amicus)
     cases_amici = list(cases_amici.items())
 
-with open(os.path.join('fixtures', 'posture.csv')) as fp:
+with open(os.path.join(FIXTURES, 'posture.csv')) as fp:
     reader = csv.reader(fp)
     next(reader) # burn header
     cases_posture = list(reader)
