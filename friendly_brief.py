@@ -4,18 +4,23 @@ from collections import Counter
 from unidecode import unidecode
 
 def amici(brief:str) -> list:
-    return list(filter(None, _amici(unidecode(brief), 0)))
+    if ' and ' in brief.lower() and ',' in brief:
+        buffer = 20
+    elif re.search(r' inc[^a-z]', brief, flags = re.IGNORECASE):
+        buffer = 5
+    else:
+        buffer = 0
+    return list(filter(None, _amici(unidecode(brief), buffer, 0)))
 
-def _amici(brief:str, start:int) -> iter:
+def _amici(brief:str, buffer:int, start:int) -> iter:
     _amicus_separator = re.compile(r'(?:,| and) ')
-    _buffer = 5
 
     match = re.search(_amicus_separator, brief[start:])
     if match != None:
-        buffered_start = max(0, start - _buffer)
-        buffered_end = start + match.end() + _buffer
+        buffered_start = max(0, start - buffer)
+        buffered_end = start + match.end() + buffer
         yield brief[buffered_start:buffered_end]
-        child = _amici(brief, start + match.end())
+        child = _amici(brief, buffer, start + match.end())
         if child != None:
             yield from child
     else:
