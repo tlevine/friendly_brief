@@ -38,8 +38,12 @@ def _amici(brief:str, buffer:int, start:int) -> iter:
         if result.count(' ') == 0:
             # Probably the beginning of an amicus like
             # "Discrimination and National Security Initiative"
-            pass
-        elif result != '' and len(result) > 8:
+            nextmatch = re.search(_amicus_separator, brief[start + match.end()])
+            if nextmatch != None:
+                # Replace the result.
+                result = brief[buffered_start:start + nextmatch.end() + buffer]
+
+        if result != '' and len(result) > 8:
             yield result
         child = _amici(brief, buffer, start + match.end())
         if child != None:
