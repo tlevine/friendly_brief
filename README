@@ -1,0 +1,32 @@
+friendly_brief parses brief titles from a CSV file and emits a new CSV file
+with some inferences about the brief. A brief title might look like this.
+
+    1.    Amicus Brief, BRIEF OF L. S. LEE, INC. AMICUS CURIAE ON BEHALF OF PETITIONER, December 6, 2000, 2000 U.S. S. Ct. Briefs LEXIS 836 
+
+For such a title, friendly_brief tries to guess the
+
+* Brief number
+* Amici curiae
+* Position of the amici
+
+How to use
+--------------
+Install it from pip. ::
+
+    pip3 install friendly_brief
+
+And run it on a CSV file. The file must contain a column with all of the
+brief titles that you care about, and the titles must be in a column called
+"brief". The CSV file can have anything else you want in it too. ::
+
+    friendly-brief briefs.csv
+
+It can also receive a CSV file over stdin.
+
+    cat briefs.csv | friendly-brief
+
+The resulting CSV file is written to stdout.
+
+How it works
+---------------
+Let's discuss how each of the inferences is made.
