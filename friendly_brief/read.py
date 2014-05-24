@@ -27,7 +27,14 @@ def amici(brief:str) -> list:
 #       buffer = 0
     buffer = 0
 
-    results = (r.strip() for r in _amici(unidecode(amici_section), buffer, 0))
+    l = amici_section.lower()
+    if l.count(',') > 3:
+        _regex = r', '
+    else:
+        _regex = r'(?:,| and) '
+    amicus_separator = re.compile(_regex, flags = re.IGNORECASE)
+
+    results = (r.strip() for r in _amici(unidecode(amici_section), amicus_separator, buffer, 0))
     for previous_result, current_result, next_result in window(chain(['  '], results, ['  ']), n = 3):
         if next_result.count(' ') == 0 and  'inc' in next_result.lower():
             yield current_result + ', ' + next_result
@@ -39,15 +46,8 @@ def amici(brief:str) -> list:
         else:
             yield current_result
 
-def _amici(brief:str, buffer:int, start:int) -> iter:
-    l = brief[start:].lower()
-    if l.count(',') > l.count('and'):
-        _regex = r', '
-    else:
-        _regex = r'(?:,| and) '
-    _amicus_separator = re.compile(_regex, flags = re.IGNORECASE)
-
-    match = re.search(_amicus_separator, brief[start:])
+def _amici(brief:str, amicus_separator, buffer:int, start:int) -> iter:
+    match = re.search(amicus_separator, brief[start:])
     buffered_start = max(0, start - buffer)
     if match != None:
         buffered_end = start + match.start() + buffer
@@ -70,7 +70,7 @@ def _amici(brief:str, buffer:int, start:int) -> iter:
             pass
         else:
             yield result
-        child = _amici(brief, buffer, start + match.end())
+        child = _amici(brief, amicus_separator, buffer, start + match.end())
         if child != None:
             yield from child
     else:
