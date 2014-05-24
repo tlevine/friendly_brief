@@ -17,13 +17,13 @@ def amici(brief:str) -> list:
 
     amici_section = re.sub(r' in support of .*', '', amici_section, flags = re.IGNORECASE)
 
-    if re.search(r' inc[^a-z]', amici_section, flags = re.IGNORECASE):
-        buffer = 5
-    elif ',' in amici_section and ' and ' in amici_section.lower():
-        buffer = 0
-    else:
-        buffer = 0
-#   buffer = 0
+#   if re.search(r' inc[^a-z]', amici_section, flags = re.IGNORECASE):
+#       buffer = 5
+#   elif ',' in amici_section and ' and ' in amici_section.lower():
+#       buffer = 0
+#   else:
+#       buffer = 0
+    buffer = 0
     return list(_amici(unidecode(amici_section), buffer, 0))
 
 def _amici(brief:str, buffer:int, start:int) -> iter:
@@ -44,7 +44,13 @@ def _amici(brief:str, buffer:int, start:int) -> iter:
                     # Replace the result.
                     result = brief[buffered_start:start + nextmatch.end() + buffer]
 
-        if result != '':
+        if re.search(r'[a-z]{4}\.', result):
+            match = re.match(r'(.*[a-z]{4})\.(.*)$', result)
+            yield match.group(1)
+            yield match.group(2)
+        elif result == '':
+            pass
+        else:
             yield result
         child = _amici(brief, buffer, start + match.end())
         if child != None:
