@@ -66,3 +66,37 @@ phrases corresponding to different postures are present.
 For example, I would consider a brief title containing both
 "plaintiff" and "defendant" to be ambiguous. In cases of
 ambiguouity, the posture cell is left blank.
+
+Amici
+~~~~~~~~~
+The messiest part of this whole process is the guessing of the amici.
+This process is designed to produce many false positives and, hopefully,
+no false negatives. That is, many non-amici will occur in the resulting
+spreadsheet, but no amici should be left out.
+
+The brief title is split into pieces at commas and at the word "and".
+Consider, for example, the following brief title.
+
+    4.    Amicus Brief, BRIEF OF SOCIAL AND ORGANIZATIONAL PSYCHOLOGISTS AS AMICI CURIAE SUPPORTING RESPONDENTS, August 13, 2012, 2012 U.S. S. Ct. Briefs LEXIS 3223  
+
+It gets split into these pieces:
+
+* 4.    Amicus Brief
+* BRIEF OF SOCIAL AND ORGANIZATIONAL PSYCHOLOGISTS AS AMICI CURIAE SUPPORTING RESPONDENTS
+* August 13
+* 2012
+* 2012 U.S. S. Ct. Briefs LEXIS 3223 
+
+Next, the piece is expanded in both directions in case an amicus was
+erroneously broken. (That would happen if the name of the amicus
+contained a comma or the word "and".) For the above example, the actual
+output is as follows, with the core amicus bolded and the expantion
+not bolded.
+
+* **4.    Amicus Brief**, BRIEF OF SOCIAL AND 
+* 4.    Amicus Brief, **BRIEF OF SOCIAL AND ORGANIZATIONAL PSYCHOLOGISTS AS AMICI CURIAE SUPPORTING RESPONDENTS**, August 13, 2012, 201
+* ORTING RESPONDENTS, **August 13**, 2012, 2012 U.S. S. C
+* ONDENTS, August 13, **2012**, 2012 U.S. S. Ct. Bri
+* **2012 U.S. S. Ct. Briefs LEXIS 3223 **
+
+In the above example, the expansion is not applied to the final group.

@@ -16,15 +16,15 @@ def _amici(brief:str, buffer:int, start:int) -> iter:
     _amicus_separator = re.compile(r'(?:,| and) ')
 
     match = re.search(_amicus_separator, brief[start:])
+    buffered_start = max(0, start - buffer)
     if match != None:
-        buffered_start = max(0, start - buffer)
         buffered_end = start + match.end() + buffer
         yield brief[buffered_start:buffered_end]
         child = _amici(brief, buffer, start + match.end())
         if child != None:
             yield from child
     else:
-        yield brief[start:]
+        yield brief[buffered_start:]
 
 def brief_number(brief:str) -> int:
     return int(re.sub('[^0-9].+$', '', brief))
