@@ -10,7 +10,7 @@ def amici(brief:str) -> list:
     match = re.search(r'amici (?:curiae)?', amici_section, flags = re.IGNORECASE)
     if match != None and match.start() < 30:
         amici_section = amici_section[match.end():]
-    match = re.search(r'amici (?:curiae)?', amici_section, flags = re.IGNORECASE)
+    match = re.search(r'(?:amici|amicus) (?:curiae)?', amici_section, flags = re.IGNORECASE)
     if match != None and match.start() > len(amici_section) / 2:
         amici_section = amici_section[:match.start()]
 
