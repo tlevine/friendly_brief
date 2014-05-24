@@ -15,7 +15,7 @@ def brief_number(brief:str) -> int:
 
 def posture(brief:str) -> int:
     codes = [
-        (0, ('Neither party',)) # maybe change it to just "Neither"?
+        (0, ('Neither party',)), # maybe change it to just "Neither"?
         (1, ('Petitioner', 'Appellant', 'Reversal')),
         (2, ('Respondent', 'Appellee', 'Affirmance')),
         (3, ('Plaintiff',)),
