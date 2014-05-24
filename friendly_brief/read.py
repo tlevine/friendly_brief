@@ -19,10 +19,10 @@ def amici(brief:str) -> list:
 #       amici_section = re.sub(r' support .*', '', amici_section, flags = re.IGNORECASE)
     amici_section = re.sub(r' support of .*', '', amici_section, flags = re.IGNORECASE)
 
-    if ',' in amici_section and ' and ' in amici_section.lower():
-        buffer = 20
-    elif re.search(r' inc[^a-z]', amici_section, flags = re.IGNORECASE):
+    if re.search(r' inc[^a-z]', amici_section, flags = re.IGNORECASE):
         buffer = 5
+    elif ',' in amici_section and ' and ' in amici_section.lower():
+        buffer = 0
     else:
         buffer = 0
     return list(_amici(unidecode(amici_section), buffer, 0))
