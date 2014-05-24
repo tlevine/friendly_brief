@@ -58,6 +58,10 @@ def check_amici_sans_brief(brief, _):
     for observed_amicus in f.amici(brief):
        n.assert_not_in('brief', observed_amicus.lower())
 
+def check_amici_sans_et_al(brief, _):
+    for observed_amicus in f.amici(brief):
+       n.assert_not_equal('et al.', observed_amicus.lower())
+
 def check_brief_number(brief, expectation):
     n.assert_equal(f.brief_number(brief), int(expectation))
 
@@ -67,7 +71,8 @@ def check_posture(brief, expectation):
 def test():
     for checker, cases in [
         (check_amici, cases_amici),
-#       (check_amici_sans_brief, cases_amici),
+        (check_amici_sans_brief, cases_amici),
+        (check_amici_sans_et_al, cases_amici),
         (check_brief_number, cases_brief_number),
         (check_posture, cases_posture),
     ]:
