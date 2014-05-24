@@ -6,7 +6,7 @@ from sliding_window import window
 from unidecode import unidecode
 
 def _remove_date(brief:str) -> str:
-    return re.sub(r',? (:?january|february|april|may|june|july|august|september|october|november|december) [0-9]{1,2}.*$', '', brief, flags = re.IGNORECASE)
+    return re.sub(r',? (:?january|february|march|april|may|june|july|august|september|october|november|december) [0-9]{1,2}.*$', '', brief, flags = re.IGNORECASE)
 
 def amici(brief:str) -> list:
     _amicus_regex = re.compile(r'(?:amicus brief|amici brief|amici curiae|amicus curiae|motion for leave to file and brief)(?: of)?', flags = re.IGNORECASE)
