@@ -7,7 +7,7 @@ def amici(brief:str) -> list:
     amici_section = re.sub(r',? (:?january|february|april|may|june|july|august|september|october|november|december) [0-9]{1,2}.*', '', brief, flags = re.IGNORECASE)
     amici_section = re.sub(r'[0-9]+\. +Brief,', '', amici_section, flags = re.IGNORECASE)
 
-    _amicus = re.compile(r'(?:amicus brief|amici brief|amici curiae|amicus curiae|motion for leave to file and brief)', flags = re.IGNORECASE)
+    _amicus = re.compile(r'(?:amicus brief|amici brief|amici curiae|amicus curiae|motion for leave to file and brief)(?: of)?', flags = re.IGNORECASE)
     match = re.search(_amicus, amici_section)
     if match != None and match.start() < 30:
         amici_section = amici_section[match.end():]
