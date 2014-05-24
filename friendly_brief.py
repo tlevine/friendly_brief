@@ -25,7 +25,8 @@ def posture(brief:str) -> int:
     code_phrase_observations = Counter()
     for code, phrases in codes:
         for phrase in phrases:
-            code_phrase_observations[code] += 1
+            if phrase.lower() in brief.lower():
+                code_phrase_observations[code] += 1
 
     if len(code_phrase_observations.keys()) == 1:
         return list(code_phrase_observations.keys())[0]
