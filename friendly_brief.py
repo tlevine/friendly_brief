@@ -1,4 +1,6 @@
 import re
+from collections import Counter
+
 from unidecode import unidecode
 
 def amici(brief:str) -> list:
@@ -12,4 +14,20 @@ def brief_number(brief:str) -> int:
     return int(re.sub('[^0-9].+$', '', brief))
 
 def posture(brief:str) -> int:
-    return None
+    codes = [
+        (0, ('Neither party',)) # maybe change it to just "Neither"?
+        (1, ('Petitioner', 'Appellant', 'Reversal')),
+        (2, ('Respondent', 'Appellee', 'Affirmance')),
+        (3, ('Plaintiff',)),
+        (4, ('Defendant',)),
+    ]
+
+    code_phrase_observations = Counter()
+    for code, phrases in codes:
+        for phrase in phrases:
+            code_phrase_observations[code] += 1
+
+    if len(c.keys()) == 1:
+        return list(c.keys())[0]
+    else:
+        return None
