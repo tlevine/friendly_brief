@@ -34,15 +34,17 @@ def _amici(brief:str, buffer:int, start:int) -> iter:
     if match != None:
         buffered_end = start + match.start() + buffer
         result = brief[buffered_start:buffered_end].strip()
-        if result.count(' ') == 0:
-            # Probably the beginning of an amicus like
-            # "Discrimination and National Security Initiative"
-            nextmatch = re.search(_amicus_separator, brief[start + match.end()])
-            if nextmatch != None:
-                # Replace the result.
-                result = brief[buffered_start:start + nextmatch.end() + buffer]
 
-        if result != '' and len(result) > 8:
+        if result.count(' ') == 0:
+            if ' and' == brief[buffered_end+1:buffered_end + 5]:
+                # Probably the beginning of an amicus like
+                # "Discrimination and National Security Initiative"
+                nextmatch = re.search(_amicus_separator, brief[start + match.end()])
+                if nextmatch != None:
+                    # Replace the result.
+                    result = brief[buffered_start:start + nextmatch.end() + buffer]
+
+        if result != '':
             yield result
         child = _amici(brief, buffer, start + match.end())
         if child != None:
