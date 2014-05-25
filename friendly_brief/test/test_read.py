@@ -55,7 +55,7 @@ But it is not among the following values output from the amici function.
         raise AssertionError(msg % lengths)
 
     for observed_amicus in observation:
-        n.assert_less(len(observed_amicus), 60, msg = observation)
+        n.assert_less(len(observed_amicus), 80, msg = observation)
 
 def check_amici_sans_brief(brief, _):
     for observed_amicus in f.amici(brief):
