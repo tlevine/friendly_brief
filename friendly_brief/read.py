@@ -68,7 +68,7 @@ def amici(brief:str) -> list:
         else:
             out.append(current_result)
 
-    if amicus_separator == onlycomma:
+    if len(out) >= 3 and _regex == onlycomma:
         out = out[:-1] + re.split(r' and ', out[-1], flags = re.IGNORECASE)
     return out
 
