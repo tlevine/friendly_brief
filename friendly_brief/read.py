@@ -32,7 +32,7 @@ def amici(brief:str) -> list:
     amici_section = re.sub(r' in support of .*', '', amici_section, flags = re.IGNORECASE)
 
     # Inc.The
-    amici_section = re.sub(r'([^ ])The ', '\1, The ', amici_section)
+    amici_section = re.sub(r'([^ ])The ', r'\1, The ', amici_section)
 
     onlycomma = r'(?:,| and the| and other) '
     l = amici_section.lower()
@@ -74,7 +74,11 @@ def amici(brief:str) -> list:
 
     if len(out) >= 3 and _regex == onlycomma:
         out = out[:-1] + re.split(r' and ', out[-1], flags = re.IGNORECASE)
-    return out
+
+    def finalize(result):
+        result = re.sub(r'^ ?(amici|of )', '', result, flags = re.IGNORECASE)
+        return result
+    return list(map(finalize, out))
 
 def _amicus(brief:str, amicus_separator, start:int) -> iter:
     match = re.search(amicus_separator, brief[start:])
