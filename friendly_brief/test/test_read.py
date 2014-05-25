@@ -96,3 +96,8 @@ def test_remove_date():
     observation = f._remove_date("19.    Amicus Brief, BRIEF FOR AMICI CURIAE ADULT PRE-ICWA INDIAN ADOPTEES SUPPORTING BIRTH FATHER AND THE CHEROKEE NATION, March 28, 2013, 2013 U.S. S. Ct. Briefs  1711")
     expectation = "19.    Amicus Brief, BRIEF FOR AMICI CURIAE ADULT PRE-ICWA INDIAN ADOPTEES SUPPORTING BIRTH FATHER AND THE CHEROKEE NATION"
     n.assert_equal(observation, expectation)
+
+def test_empty_brief():
+    n.assert_list_equal(f.amici(''), [])
+    n.assert_equal(f.brief_number(''), '')
+    n.assert_equal(f.posture(''), '')

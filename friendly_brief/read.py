@@ -9,12 +9,13 @@ def _remove_date(brief:str) -> str:
     return re.sub(r',? (:?january|february|march|april|may|june|july|august|september|october|november|december) [0-9]{1,2}.*$', '', brief, flags = re.IGNORECASE)
 
 MANUAL_OVERRIDE = [
+    (r'^$', []),
     ("1. Brief, BRIEF OF AMICI CURIAE NATIONAL ASSOCIATION OF CRIMINAL DEFENSE LAWYERS AND FAMILIES AGAINST MANDATORY MINIMUMS FOUNDATION AND ASSOCIATION OF FEDERAL DEFENDERS IN SUPPORT OF PETITIONERTHE NATIONAL ASSOCIATION OF CRIMINAL DEFENSE LAWYERS and FAMILIES AGAINST MANDATORY MINIMUMS FOUNDATION and THE ASSOCIATION OF FEDERAL DEFENDERS", ['NATIONAL ASSOCIATION OF CRIMINAL DEFENSE LAWYERS', 'FAMILIES AGAINST MANDATORY MINIMUMS FOUNDATION', 'ASSOCIATION OF FEDERAL DEFENDERS'])
 ]
 
 def amici(brief:str) -> list:
     for member, result in MANUAL_OVERRIDE:
-        if member in brief:
+        if re.match(member, brief):
             return result
 
     _amicus_regex = re.compile(r'(?:amicus brief|amici brief|amici curiae|amicus curiae|motion for leave to file and brief)(?: of)?', flags = re.IGNORECASE)
