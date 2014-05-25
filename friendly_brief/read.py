@@ -77,6 +77,7 @@ def amici(brief:str) -> list:
 
     def finalize(result):
         result = re.sub(r'^ ?(amici|of )', '', result, flags = re.IGNORECASE)
+        result = re.sub(r' (on behalf of).*$', '', result, flags = re.IGNORECASE)
         return result
     return list(map(finalize, out))
 
