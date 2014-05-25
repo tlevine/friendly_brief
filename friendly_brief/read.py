@@ -79,7 +79,7 @@ def _amicus(brief:str, amicus_separator, start:int) -> iter:
             if ' and' == brief[end+1:end + 5]:
                 # Probably the beginning of an amicus like
                 # "Discrimination and National Security Initiative"
-                nextmatch = re.search(_amicus_separator, brief[start + match.end()])
+                nextmatch = re.search(amicus_separator, brief[start + match.end()])
                 if nextmatch != None:
                     # Replace the result.
                     result = brief[start:start + nextmatch.end()]
