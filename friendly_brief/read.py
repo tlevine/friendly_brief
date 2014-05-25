@@ -31,6 +31,9 @@ def amici(brief:str) -> list:
 
     amici_section = re.sub(r' in support of .*', '', amici_section, flags = re.IGNORECASE)
 
+    # Inc.The
+    amici_section = re.sub(r'([^ ])The ', '\1, The ', amici_section)
+
     onlycomma = r'(?:,| and the| and other) '
     l = amici_section.lower()
     if l.count(';') > 0:
