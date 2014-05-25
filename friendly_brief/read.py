@@ -16,10 +16,7 @@ def amici(brief:str) -> list:
     for member, result in MANUAL_OVERRIDE:
         if member in brief:
             return result
-    else:
-        return list(_amici(brief))
 
-def _amici(brief:str) -> iter:
     _amicus_regex = re.compile(r'(?:amicus brief|amici brief|amici curiae|amicus curiae|motion for leave to file and brief)(?: of)?', flags = re.IGNORECASE)
     amici_section = _remove_date(brief)
     amici_section = re.sub(r'[0-9]+\. +Brief,', '', amici_section, flags = re.IGNORECASE)
@@ -33,11 +30,12 @@ def _amici(brief:str) -> iter:
 
     amici_section = re.sub(r' in support of .*', '', amici_section, flags = re.IGNORECASE)
 
+    onlycomma = r'(?:,| and the| and other) '
     l = amici_section.lower()
     if l.count(';') > 0:
         _regex = r'; '
     elif l.count(',') > 3 or ', and' in l or l.count(',') > l.count('and') or l.count(',') == l.count(', inc'):
-        _regex = r'(?:,| and the| and other) '
+        _regex = onlycomma 
     else:
         _regex = r'(?:,| and) '
     amicus_separator = re.compile(_regex, flags = re.IGNORECASE)
@@ -57,17 +55,22 @@ def _amici(brief:str) -> iter:
     # Clean twice
     results = map(clean, map(clean, _amicus(unidecode(amici_section), amicus_separator, 0)))
     slider = window(chain([''], results, ['']), n = 3)
+    out = []
     for previous_result, current_result, next_result in slider:
         if re.match(r'^(|as|amic(i|us) curiae)$', current_result, flags = re.IGNORECASE):
             pass
         elif re.match(r'^[^a-z]{0,2}(inc|jr)[^a-z]{0,2}', next_result, flags = re.IGNORECASE):
-            yield current_result + ', ' + next_result
+            out.append(current_result + ', ' + next_result)
             next(slider)
         elif re.match(r'^et al\.?,?$', next_result, flags = re.IGNORECASE):
-            yield current_result + ', ' + next_result
+            out.append(current_result + ', ' + next_result)
             next(slider)
         else:
-            yield current_result
+            out.append(current_result)
+
+    if amicus_separator == onlycomma:
+        out = out[:-1] + re.split(r' and ', out[-1], flags = re.IGNORECASE)
+    return out
 
 def _amicus(brief:str, amicus_separator, start:int) -> iter:
     match = re.search(amicus_separator, brief[start:])
