@@ -13,12 +13,14 @@ MANUAL_OVERRIDE = [
 ]
 
 def amici(brief:str) -> list:
-    for member, result in MANUAL_OVERRIDE:
+    for member, manual_results in MANUAL_OVERRIDE:
         if member in brief:
-            return result
+            results = manual_results
     else:
-        return list(_amici(brief))
-
+        results = list(_amici(brief))
+        if ' and ' in results[-1].lower() and all(' and ' not in result.lower() for result in results[:-1]) or brief.count(',') > 4:
+            results = results[:-1] + re.split(r' and ', results[-1], flags = re.IGNORECASE)
+    return results
 def _amici(brief:str) -> iter:
     _amicus_regex = re.compile(r'(?:amicus brief|amici brief|amici curiae|amicus curiae|motion for leave to file and brief)(?: of)?', flags = re.IGNORECASE)
     amici_section = _remove_date(brief)
