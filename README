@@ -70,48 +70,28 @@ ambiguouity, the posture cell is left blank.
 Amici
 ~~~~~~~~~
 The messiest part of this whole process is the guessing of the amici.
-This process is designed to produce many false positives and, hopefully,
-no false negatives. That is, many non-amici will occur in the resulting
-spreadsheet, but no amici should be left out.
+I don't even know what it's doing, but here are some of the concepts.
 
-The brief title is split into pieces at commas and at the word "and".
-Consider, for example, the following brief title.
+Pretty early on, the date and everything after get removed. For example, this
 
     4.    Amicus Brief, BRIEF OF SOCIAL AND ORGANIZATIONAL PSYCHOLOGISTS AS AMICI CURIAE SUPPORTING RESPONDENTS, August 13, 2012, 2012 U.S. S. Ct. Briefs LEXIS 3223  
 
-It gets split into these pieces:
+becomes this.
+
+    4.    Amicus Brief, BRIEF OF SOCIAL AND ORGANIZATIONAL PSYCHOLOGISTS AS AMICI CURIAE SUPPORTING RESPONDENTS
+
+The brief title is split into pieces at things like commas, semicolons
+and the word "and", so we wind up with something like this.
 
 * 4.    Amicus Brief
 * BRIEF OF SOCIAL AND ORGANIZATIONAL PSYCHOLOGISTS AS AMICI CURIAE SUPPORTING RESPONDENTS
-* August 13
-* 2012
-* 2012 U.S. S. Ct. Briefs LEXIS 3223 
 
-Next, the piece is expanded in both directions in case an amicus was
-erroneously broken. (That would happen if the name of the amicus
-contained a comma or the word "and".) For the above example, the actual
-output is as follows, with the core amicus bolded and the expantion
-not bolded.
+Things that don't look like the names of amici get removed. This includes
+words like "amici", "amicus", "supporting", "as", and "brief", and we wind
+up with the following amicus.
 
-* **4.    Amicus Brief**, BRIEF OF SOCIAL AND 
-* \4.    Amicus Brief, **BRIEF OF SOCIAL AND ORGANIZATIONAL PSYCHOLOGISTS AS AMICI CURIAE SUPPORTING RESPONDENTS**, August 13, 2012, 201
-* ORTING RESPONDENTS, **August 13**, 2012, 2012 U.S. S. C
-* ONDENTS, August 13, **2012**, 2012 U.S. S. Ct. Bri
-* S, August 13, 2012, **2012 U.S. S. Ct. Briefs LEXIS 3223**
+    SOCIAL AND ORGANIZATIONAL PSYCHOLOGISTS
 
-In the above example, the pieces are expanded by up 20 letters in
-each direction. In other cases, the expansion is smaller; here is
-how the size of the expansion is chosen.
-
-1. We first check whether the brief title contains both a comma and the word "and".
-   In such cases, the expansion is 20 letters in each direction. The reasoning
-   for this is that it is likely that an amicus's name contains
-   either a comma or the word "and" and that the amicus will thus
-   get split erroneously; the large expansion is to avoid breaking
-   the amicus's name.
-2. If the comma and "and" criterion was not met, we check for
-   a phrase like "Inc.". If it contains a phrase like "Inc.",
-   the expansion is five letters in each direction. Amici often have
-   names like "Cogswell Cogs, Inc.", and the intent of this rule
-   is to include the "Inc." in the name of the amicus.
-3. If the above two criteria were not met, no expansion is used (zero letters).
+Lots of weird things are done to deal with suffixes ("INC", "LLC", "JR"),
+non-serial commas ("first, second and third"), strange character encodings,
+misspellings, and other typos in the brief title.
