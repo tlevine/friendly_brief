@@ -13,14 +13,12 @@ MANUAL_OVERRIDE = [
 ]
 
 def amici(brief:str) -> list:
-    for member, manual_results in MANUAL_OVERRIDE:
+    for member, result in MANUAL_OVERRIDE:
         if member in brief:
-            results = manual_results
+            return result
     else:
-        results = list(_amici(brief))
-        if ' and ' in results[-1].lower() and all(' and ' not in result.lower() for result in results[:-1]) or brief.count(',') > 4:
-            results = results[:-1] + re.split(r' and ', results[-1], flags = re.IGNORECASE)
-    return results
+        return list(_amici(brief))
+
 def _amici(brief:str) -> iter:
     _amicus_regex = re.compile(r'(?:amicus brief|amici brief|amici curiae|amicus curiae|motion for leave to file and brief)(?: of)?', flags = re.IGNORECASE)
     amici_section = _remove_date(brief)
@@ -34,14 +32,6 @@ def _amici(brief:str) -> iter:
         amici_section = amici_section[:match.start()]
 
     amici_section = re.sub(r' in support of .*', '', amici_section, flags = re.IGNORECASE)
-
-#   if re.search(r' inc[^a-z]', amici_section, flags = re.IGNORECASE):
-#       buffer = 5
-#   elif ',' in amici_section and ' and ' in amici_section.lower():
-#       buffer = 0
-#   else:
-#       buffer = 0
-    buffer = 0
 
     l = amici_section.lower()
     if l.count(';') > 0:
@@ -65,7 +55,7 @@ def _amici(brief:str) -> iter:
             return r
 
     # Clean twice
-    results = map(clean, map(clean, _amicus(unidecode(amici_section), amicus_separator, buffer, 0)))
+    results = map(clean, map(clean, _amicus(unidecode(amici_section), amicus_separator, 0)))
     slider = window(chain(['  '], results, ['  ']), n = 3)
     for previous_result, current_result, next_result in slider:
         if re.match(r'^(|as|amic(i|us) curiae)$', current_result, flags = re.IGNORECASE):
@@ -79,21 +69,20 @@ def _amici(brief:str) -> iter:
         else:
             yield current_result
 
-def _amicus(brief:str, amicus_separator, buffer:int, start:int) -> iter:
+def _amicus(brief:str, amicus_separator, start:int) -> iter:
     match = re.search(amicus_separator, brief[start:])
-    buffered_start = max(0, start - buffer)
     if match != None:
-        buffered_end = start + match.start() + buffer
-        result = brief[buffered_start:buffered_end]
+        end = start + match.start()
+        result = brief[start:end]
 
         if result.count(' ') == 0:
-            if ' and' == brief[buffered_end+1:buffered_end + 5]:
+            if ' and' == brief[end+1:end + 5]:
                 # Probably the beginning of an amicus like
                 # "Discrimination and National Security Initiative"
                 nextmatch = re.search(_amicus_separator, brief[start + match.end()])
                 if nextmatch != None:
                     # Replace the result.
-                    result = brief[buffered_start:start + nextmatch.end() + buffer]
+                    result = brief[start:start + nextmatch.end()]
 
         if re.search(r'[a-z]{4}\.', result):
             match = re.match(r'^(.*[a-z]{4})\.(.*)$', result)
@@ -103,11 +92,11 @@ def _amicus(brief:str, amicus_separator, buffer:int, start:int) -> iter:
             pass
         else:
             yield result
-        child = _amicus(brief, amicus_separator, buffer, start + match.end())
+        child = _amicus(brief, amicus_separator, start + match.end())
         if child != None:
             yield from child
     else:
-        yield brief[buffered_start:]
+        yield brief[start:]
 
 def brief_number(brief:str) -> int:
     return int(re.sub('[^0-9].+$', '', brief))
