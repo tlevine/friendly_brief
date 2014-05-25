@@ -56,7 +56,7 @@ def _amici(brief:str) -> iter:
 
     # Clean twice
     results = map(clean, map(clean, _amicus(unidecode(amici_section), amicus_separator, 0)))
-    slider = window(chain(['  '], results, ['  ']), n = 3)
+    slider = window(chain([''], results, ['']), n = 3)
     for previous_result, current_result, next_result in slider:
         if re.match(r'^(|as|amic(i|us) curiae)$', current_result, flags = re.IGNORECASE):
             pass
