@@ -102,10 +102,10 @@ def _amicus(brief:str, amicus_separator, start:int) -> iter:
     else:
         yield brief[start:]
 
-def brief_number(brief:str) -> int:
-    return int(re.sub('[^0-9].+$', '', brief))
+def brief_number(brief:str) -> str:
+    return re.sub('[^0-9].+$', '', brief)
 
-def posture(brief:str) -> int:
+def posture(brief:str) -> str:
     codes = [
         (0, ('Neither party',)), # maybe change it to just "Neither"?
         (1, ('Petitioner', 'Appellant', 'Reversal')),
@@ -121,6 +121,6 @@ def posture(brief:str) -> int:
                 code_phrase_observations[code] += 1
 
     if len(code_phrase_observations.keys()) == 1:
-        return list(code_phrase_observations.keys())[0]
+        return str(list(code_phrase_observations.keys())[0])
     else:
         return ''

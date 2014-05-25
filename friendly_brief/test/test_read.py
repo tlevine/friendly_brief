@@ -75,7 +75,7 @@ def check_amici_sans_literal_junk(brief, _):
             n.assert_not_equal(junk, observed_amicus.lower())
 
 def check_brief_number(brief, expectation):
-    n.assert_equal(f.brief_number(brief), int(expectation))
+    n.assert_equal(f.brief_number(brief), expectation)
 
 def check_posture(brief, expectation):
     n.assert_equal(str(f.posture(brief)), expectation)
